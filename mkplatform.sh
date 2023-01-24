@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eo pipefail
 
-# Default to M1
-ver="${1:-m1}"
+# Default to X88-Pro-B (RK3318)
+ver="${1:-t9_3328}"
 [[ $# -ge 1 ]] && shift 1
 if [[ $# -ge 0 ]]; then
   armbian_extra_flags=("$@")
@@ -15,11 +15,13 @@ C=$(pwd)
 A=../../armbian
 P="rkbox_${ver}"
 B="current"
-if [ ${ver} = "m1" ]
+if [[ ${ver} == "t9_3328" || ${ver} == "x88pro_b_3318" ]]
 then
+  echo "rk3318 box selected, rockchip64 kernel"
   T="rk3318-box"
   K="rockchip64"
 else
+  echo "rk322x box selected, rk322x kernel"
   T="rk322x-box"
   K="rk322x"
 fi
@@ -72,12 +74,20 @@ dpkg-deb -x "${A}/output/debs/linux-image-${B}-${K}_${ARMBIAN_VERSION}"_* "${P}"
 dpkg-deb -x "${A}/output/debs/linux-u-boot-${B}-${T}_${ARMBIAN_VERSION}"_* "${P}"
 dpkg-deb -x "${A}/output/debs/armbian-firmware_${ARMBIAN_VERSION}"_* "${P}"
 
-# Copy bootloader stuff
-cp "${P}"/usr/lib/linux-u-boot-${B}-*/idbloader.img "${P}/u-boot"
-cp "${P}"/usr/lib/linux-u-boot-${B}-*/u-boot.itb "${P}/u-boot"
-
-mv "${P}"/boot/dtb* "${P}"/boot/dtb
-mv "${P}"/boot/vmlinuz* "${P}"/boot/Image
+# Copy bootloader, dtb and image
+if [[ ${T} == "rk3318-box" ]]
+then
+  echo "Select rk3318-box bootloader, dtb and image"
+  cp "${P}"/usr/lib/linux-u-boot-${B}-*/idbloader.img "${P}/u-boot"
+  cp "${P}"/usr/lib/linux-u-boot-${B}-*/u-boot.itb "${P}/u-boot"
+  mv "${P}"/boot/dtb* "${P}"/boot/dtb
+  mv "${P}"/boot/vmlinuz* "${P}"/boot/Image
+else
+  echo "Select rk322x-box bootloader, dtb and image"
+  cp "${P}"/usr/lib/linux-u-boot-${B}-*/u-boot-rk322x-with-spl.bin "${P}/u-boot"
+  mv "${P}"/boot/dtb* "${P}"/boot/dtb
+  mv "${P}"/boot/vmlinuz* "${P}"/boot/zImage
+fi
 
 # Clean up unneeded parts
 rm -rf "${P}/lib/firmware/.git"
