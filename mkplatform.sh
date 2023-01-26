@@ -1,8 +1,10 @@
 #!/bin/bash
 set -eo pipefail
 
-# Default to X88-Pro-B (RK3318)
+## Default to X88-Pro-B (RK3318)
 ver="${1:-x88pro_b_3318}"
+#ver="${1:-t9_3328}"
+
 [[ $# -ge 1 ]] && shift 1
 if [[ $# -ge 0 ]]; then
   armbian_extra_flags=("$@")
