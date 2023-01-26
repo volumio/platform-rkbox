@@ -6,8 +6,5 @@ rootdev=UUID=
 rootfstype=ext4
 console=both
 usbstoragequirks=0x2537:0x1066:u,0x2537:0x1068:u
-extraargs=imgpart=UUID=
-extraargs=bootpart=UUID=
-extraargs=datapart=UUID=
-extraargs=bootconfig=armbianEnv.txt imgfile=/volumio_current.sqsh
+extraargs=imgpart=UUID= bootpart=UUID= datapart=UUID= bootconfig=armbianEnv.txt imgfile=/volumio_current.sqsh
 overlays=rk3318-box-cpu-hs rk3318-box-wlan-ext rk3318-box-led-conf2 rk3318-box-emmc-hs200 rk3318-box-emmc-ddr
