@@ -106,6 +106,18 @@ for dts in "${C}"/overlay-user/overlays-"${P}"/*.dts; do
   fi
 done
 
+# Compile and copy custom dtb files
+for dts in "${C}"/custom-dtb/*.dts; do
+  dts_file=${dts%%.*}
+  if [ -s "${dts_file}.dts" ]
+  then
+    echo "Compiling ${dts_file}"
+    dtc -I dts -O dtb -o "${dts_file}.dtb" "${dts_file}.dts"
+    mv "${dts_file}.dtb" "${P}"/boot/dtb/rockchip
+  fi
+done
+
+
 # Copy and compile boot script
 cp "${A}"/config/bootscripts/boot-"${K}".cmd "${P}"/boot/boot.cmd
 mkimage -C none -A arm -T script -d "${P}"/boot/boot.cmd "${P}"/boot/boot.scr
