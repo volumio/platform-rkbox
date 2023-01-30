@@ -1,7 +1,7 @@
 verbosity=8
 bootlogo=false
 overlay_prefix=rockchip
-fdtfile=rockchip/rk3318-box.dtb
+fdtfile=rockchip/rkbox_x88pro_b_3318.dtb
 rootdev=UUID=
 rootfstype=ext4
 console=both
