@@ -2,9 +2,9 @@
 set -eo pipefail
 
 ## Default to HK1
-#ver="${1:-hk1}"
+ver="${1:-hk1}"
 #ver="${1:-t9}"
-ver="${1:-h96max}"
+#ver="${1:-h96max}"
 #ver="${1:-x88pro}"
 
 [[ $# -ge 1 ]] && shift 1
