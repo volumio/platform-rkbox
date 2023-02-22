@@ -2,9 +2,9 @@
 set -eo pipefail
 
 ## Default to HK1
-ver="${1:-hk1}"
+#ver="${1:-hk1}"
 #ver="${1:-t9}"
-#ver="${1:-h96max}"
+ver="${1:-h96max}"
 #ver="${1:-x88pro}"
 
 [[ $# -ge 1 ]] && shift 1
@@ -60,7 +60,7 @@ cd ${A}
 ARMBIAN_HASH=$(git rev-parse --short HEAD)
 echo "Building for $P -- with Armbian ${ARMBIAN_VERSION} -- $B"
 
-./compile.sh BOARD="${T}" BRANCH="${B}" RELEASE=buster KERNEL_CONFIGURE=no EXTERNAL=yes BUILD_KSRC=no BUILD_DESKTOP=no BUILD_ONLY=u-boot,kernel,armbian-firmware "${armbian_extra_flags[@]}"
+#./compile.sh BOARD="${T}" BRANCH="${B}" RELEASE=buster KERNEL_CONFIGURE=no EXTERNAL=yes BUILD_KSRC=no BUILD_DESKTOP=no BUILD_ONLY=u-boot,kernel,armbian-firmware "${armbian_extra_flags[@]}"
 
 echo "Done!"
 
@@ -124,7 +124,6 @@ if [[ ${ver} == "h96max" ]]
 then
   echo "Adding alt nvram config for SP2734C"
   cp "${C}"/alt-nvram/sp2734c.txt "${P}"/lib/firmware/brcm/brcmfmac4334-sdio.rockchip,rk3318-box.txt
-  chattr +i "${P}"/lib/firmware/brcm/brcmfmac4334-sdio.rockchip,rk3318-box.txt
 fi
 
 # Copy and compile boot script
