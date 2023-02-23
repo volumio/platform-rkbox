@@ -1,9 +1,11 @@
 #!/bin/bash
 set -eo pipefail
 
-## Default to X88-Pro-B (RK3318)
-ver="${1:-x88pro_b_3318}"
-#ver="${1:-t9_3328}"
+## Default to HK1
+ver="${1:-hk1}"
+#ver="${1:-t9}"
+#ver="${1:-h96max}"
+#ver="${1:-x88pro}"
 
 [[ $# -ge 1 ]] && shift 1
 if [[ $# -ge 0 ]]; then
@@ -17,7 +19,7 @@ C=$(pwd)
 A=../../armbian
 P="rkbox_${ver}"
 B="current"
-if [[ ${ver} == "t9_3328" || ${ver} == "x88pro_b_3318" ]]
+if [[ ${ver} == "t9" || ${ver} == "x88pro" || ${ver} == "hk1" || ${ver} == "h96max" ]]
 then
   echo "rk3318 box selected, rockchip64 kernel"
   T="rk3318-box"
@@ -58,7 +60,7 @@ cd ${A}
 ARMBIAN_HASH=$(git rev-parse --short HEAD)
 echo "Building for $P -- with Armbian ${ARMBIAN_VERSION} -- $B"
 
-./compile.sh BOARD="${T}" BRANCH="${B}" RELEASE=buster KERNEL_CONFIGURE=no EXTERNAL=yes BUILD_KSRC=no BUILD_DESKTOP=no BUILD_ONLY=u-boot,kernel,armbian-firmware "${armbian_extra_flags[@]}"
+#./compile.sh BOARD="${T}" BRANCH="${B}" RELEASE=buster KERNEL_CONFIGURE=no EXTERNAL=yes BUILD_KSRC=no BUILD_DESKTOP=no BUILD_ONLY=u-boot,kernel,armbian-firmware "${armbian_extra_flags[@]}"
 
 echo "Done!"
 
@@ -117,6 +119,12 @@ for dts in "${C}"/custom-dtb/*.dts; do
   fi
 done
 
+# Add custom nvram config
+if [[ ${ver} == "h96max" ]]
+then
+  echo "Adding alt nvram config for SP2734C"
+  cp "${C}"/alt-nvram/sp2734c.txt "${P}"/lib/firmware/brcm/brcmfmac4334-sdio.rockchip,rk3318-box.txt
+fi
 
 # Copy and compile boot script
 cp "${A}"/config/bootscripts/boot-"${K}".cmd "${P}"/boot/boot.cmd
