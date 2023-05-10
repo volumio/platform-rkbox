@@ -16,7 +16,7 @@ else
 fi
 
 C=$(pwd)
-A=../../armbian
+A=../../armbian-master
 P="rkbox_${ver}"
 B="current"
 if [[ ${ver} == "t9" || ${ver} == "x88pro" || ${ver} == "hk1" || ${ver} == "h96max" ]]
@@ -75,7 +75,7 @@ cp "${A}/output/debs/linux-headers-${B}-${K}_${ARMBIAN_VERSION}"* "${C}"
 
 dpkg-deb -x "${A}/output/debs/linux-dtb-${B}-${K}_${ARMBIAN_VERSION}"* "${P}"
 dpkg-deb -x "${A}/output/debs/linux-image-${B}-${K}_${ARMBIAN_VERSION}"* "${P}"
-dpkg-deb -x "${A}/output/debs/linux-u-boot-${T}-${B}_${ARMBIAN_VERSION}"* "${P}"
+dpkg-deb -x "${A}/output/debs/linux-u-boot-${B}-${T}_${ARMBIAN_VERSION}"* "${P}"
 dpkg-deb -x "${A}/output/debs/armbian-firmware_${ARMBIAN_VERSION}"* "${P}"
 
 # Copy bootloader, dtb and image
